@@ -62,9 +62,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    'crawlab.CrawlabPipeline': 888,
-}
+# ITEM_PIPELINES = {
+#     'crawlab.CrawlabPipeline': 888,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -86,3 +86,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# 加入到 scrapy_quotes/scrapy_quotes/settings.py 最后
+ITEM_PIPELINES = {
+    'crawlab.CrawlabPipeline': 300,
+}

@@ -1,21 +1,19 @@
+# scrapy_quotes/scrapy_quotes/spiders/quotes.py
 import scrapy
 
-
 class QuotesSpider(scrapy.Spider):
-    name = "quotes"
-    start_urls = [
-        'https://quotes.toscrape.com/page/1/',
-    ]
+    name = 'quotes'
+    allowed_domains = ['quotes.toscrape.com']
+    start_urls = ['http://quotes.toscrape.com/']
 
     def parse(self, response):
-        for quote in response.css('div.quote'):
+        for quote in response.css("div.quote"):
             yield {
-                'text': quote.css('span.text::text').get(),
-                'author': quote.css('small.author::text').get(),
-                'tags': quote.css('div.tags a.tag::text').getall(),
+                'text': quote.css("span.text::text").extract_first(),
+                'author': quote.css("small.author::text").extract_first(),
+                'tags': ','.join(quote.css("div.tags > a.tag::text").extract())
             }
 
-        next_page = response.css('li.next a::attr(href)').get()
-        if next_page is not None:
-            next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback=self.parse)
+        next_page_url = response.css("li.next > a::attr(href)").extract_first()
+        if next_page_url is not None:
+            yield scrapy.Request(response.urljoin(next_page_url))
